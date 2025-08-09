@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BATOO SOFA</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header, footer {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #0070f3;
+      cursor: pointer;
+    }
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #0070f3;
+    }
+    nav a.active {
+      font-weight: 700;
+      color: #0070f3;
+    }
+    .hero {
+      background-image: url("sofa.jpg");
+      background-size: cover;
+      background-position: center;
+      height: 100vh; /* 화면 높이 100% */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 0;
+    }
+    .hero span {
+      position: relative;
+      z-index: 1;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+      min-height: 70vh;
+    }
+    /* 바투 소파 소개 섹션 사진 스타일 */
+    .intro-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .intro-text {
+      flex: 1 1 320px;
+      min-width: 560px;
+      font-size: 2.2rem;
+      line-height: 3.2;
+      color: #222;
+      max-width: 1000px;
+    }
+    .intro-image {
+      flex: 1 1 1200px;
+      max-width: 1200px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .intro-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+    }
+    /* 제품 소개 */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .product {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display:flex;
+      flex-direction:column;
+      transition: box-shadow 0.3s;
+      min-height: 480px; /* 기존 420px → 480px로 높이 증가 */
+    }
+    .product:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .product img {
+      width: 100%;
+      height: 280px; /* 기존 250px → 280px로 높이 증가 */
+      object-fit: cover;
+      display:block;
+    }
+    .product .info {
+      padding: 1rem;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+    }
+    .product .info h4 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      color: #0070f3;
+    }
+    .product .info p {
+      margin: 0 0 1rem;
+      color: gray;
+      font-weight:600;
+      font-size: 1.1rem;
+    }
+    .product .info button {
+      background: #0070f3;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 5px;
+      width: 100%;
+      cursor:pointer;
+      font-weight:600;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      margin-top: auto;
+    }
+    .product .info button:hover {
+      background: #005bb5;
+    }
+    /* 섹션 기본 스타일 */
+    .section {
+      background: #eef6ff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type=email], textarea, select, input[type=text] {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 0.95rem;
+    }
+    button.subscribe {
+      background: #0070f3;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor:pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+    button.subscribe:hover {
+      background: #005bb5;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: gray;
+      margin-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    /* 리뷰용 (스타) */
+    .stars { display:flex; gap:6px; align-items:center; }
+    .star { font-size:1.6rem; cursor:pointer; color:lightgray; user-select:none; transition: color 0.3s; }
+    .star.selected { color: gold; }
+    .review-list { margin-top: 1rem; display:flex; flex-direction:column; gap:0.6rem; }
+    .review-item { background:#fff;padding:.75rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+    .meta{ font-size:0.85rem; color:gray; margin-bottom:0.4rem; }
+    .row { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
+    .btn-ghost { background:transparent; border:1px solid #ddd; padding:.45rem .75rem; border-radius:6px; cursor:pointer; }
+    /* 홈 섹션 페이드인 */
+    .home-section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      margin-bottom: 3rem;
+
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    .home-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media(max-width:900px){
+      .intro-section {
+        flex-direction: column;
+      }
+      .intro-text, .intro-image {
+        max-width: 100%;
+      }
+      .product img {
+        height: 220px;
+      }
+      .hero{
+        height: 240px;
+        font-size: 1.3rem;
+      }
+      .product {
+        min-height: 420px;
+      }
+    }
+
+    /* 소셜 링크 */
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .social-btn {
+      flex: 1;
+      text-align: center;
+      padding: 1rem 0;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      min-width: 140px;
+    }
+    .social-btn.instagram {
+      background: #E1306C; /* 인스타그램 핑크 */
+    }
+    .social-btn.instagram:hover {
+      background: #B62456;
+    }
+    .social-btn.blog {
+      background: #03C75A; /* 네이버 블로그 그린 */
+    }
+    .social-btn.blog:hover {
+      background: #029946;
+    }
+
+    /* 유튜브 섹션 */
+    .youtube-section {
+      text-align: center;
+    }
+    .youtube-iframe {
+      width: 100%;
+      max-width: 1000px;
+      height: 560px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      margin-bottom: 1rem;
+    }
+    .btn-youtube {
+      background: #FF0000;
+      color: white;
+      border: none;
+      padding: 0.7rem 2.2rem;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 3px 8px rgba(255,0,0,0.6);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .btn-youtube:hover {
+      background: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 id="logo">BATOO SOFA</h1>
+    <nav>
+      <a href="#home" class="nav-link">홈</a>
+      <a href="#products" id="nav-products" class="nav-link">제품</a>
+      <a href="#reviews" id="nav-reviews" class="nav-link">리뷰</a>
+      <a href="#contact" class="nav-link">연락처</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="banner"><span></span></div>
+
+<div class="container" id="main"></div>
+
+<footer>
+  © 2025 Batoo Sofa. All rights reserved.
+</footer>
+
+<script>
+  const PRODUCTS = {
+    1: { id:1, name: "꾸오래", price: "₩1,000,000", img: "kkuore.jpg", desc: "고급 가죽과 견고한 프레임으로 제작된 클래식 라인의 프리미엄 소파입니다. 장시간 사용에도 편안함 유지." },
+    2: { id:2, name: "피오래", price: "₩1,100,000", img: "fiore.jpg", desc: "부드러운 패브릭 소재와 모던한 디자인의 조화. 공간을 밝게 만드는 컬러 옵션 제공." },
+    3: { id:3, name: "피오래-아이보리", price: "₩1,200,000", img: "fiore_ivory.jpg", desc: "넓은 좌석과 깊은 쿠션으로 휴식을 극대화한 모델. 가족 모두의 휴식 공간으로 적합합니다." },
+    4: { id:4, name: "미라클", price: "₩1,300,000", img: "miracle.jpg", desc: "미니멀한 라인과 뛰어난 내구성의 조합. 세련된 거실을 완성해 줍니다." }
+  };
+
+  const REVIEWS_KEY = 'batoo_reviews_v1';
+
+  function loadReviews() {
+    try {
+      return JSON.parse(localStorage.getItem(REVIEWS_KEY)) || [];
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function saveReviews(list) {
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(list));
+  }
+
+  const mainEl = document.getElementById('main');
+
+  // 홈 화면 HTML 생성 (요청 반영 완료)
+  function getHomeHTML(){
+    return `
+      <section class="home-section intro-section">
+        <div class="intro-text">
+          <h2>바투 소파 소개</h2>
+          <p>37년 장인의 손길이 담긴 최고의 소파 브랜드, 바투 소파입니다. 편안함과 디자인을 모두 만족시키는 제품을 제공합니다.</p>
+        </div>
+        <div class="intro-image">
+          <img src="intro.jpg" alt="바투 소파 매장 사진" />
+        </div>
+      </section>
+
+      <section class="home-section" id="products-list">
+        <h2>제품 소개</h2>
+        <div class="products">
+          ${Object.values(PRODUCTS).map(p => `
+            <div class="product">
+              <img src="${p.img}" alt="${escapeHtml(p.name)}" />
+              <div class="info">
+                <h4>${escapeHtml(p.name)}</h4>
+                <p>${p.price}</p>
+                <button data-id="${p.id}">자세히 보기</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <section class="home-section youtube-section">
+        <h2>유튜브 소개</h2>
+        <!-- 유튜브 영상은 로컬 파일에서 제대로 안 나올 수 있으니 웹 서버에서 열기를 권장합니다 -->
+        <iframe class="youtube-iframe" src="https://www.youtube.com/embed/gOn-i7L6swU" allowfullscreen></iframe>
+        <button class="btn-youtube" id="youtubeBtn">유튜브 채널 바로가기</button>
+      </section>
+
+      <section class="home-section">
+        <h2>인스타그램 & 블로그</h2>
+        <div class="social-links">
+          <a href="https://www.instagram.com/batoosofa/" target="_blank" rel="noopener noreferrer" class="social-btn instagram">
+            📷 Instagram
+          </a>
+          <a href="https://blog.naver.com/sofaman40y" target="_blank" rel="noopener noreferrer" class="social-btn blog">
+            📝 Blog
+          </a>
+        </div>
+      </section>
+
+      <section class="home-section">
+        <h2>사업자 정보</h2>
+        <p>상호명: 바투 소파</p>
+        <p>대표자: 신행수</p>
+        <p>사업자등록번호: 123-45-67890</p>
+        <p>주소: 서울시 강남구 ...</p>
+        <p>전화: 010-1234-5678</p>
+      </section>
+    `;
+  }
+
+  // 제품 목록 페이지 (네비에서 #products 클릭 시)
+  function getProductsPageHTML(){
+    return `
+      <section class="home-section" id="products-list">
+        <h2>제품 목록</h2>
+        <div class="products">
+          ${Object.values(PRODUCTS).map(p => `
+            <div class="product">
+              <img src="${p.img}" alt="${escapeHtml(p.name)}" />
+              <div class="info">
+                <h4>${escapeHtml(p.name)}</h4>
+                <p>${p.price}</p>
+                <button data-id="${p.id}">자세히 보기</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  // 리뷰 리스트 html 생성
+  function getReviewsHTML() {
+    const reviews = loadReviews();
+    if (reviews.length === 0) {
+      return `<p>등록된 리뷰가 없습니다.</p>`;
+    }
+    return `
+      <div class="review-list">
+        ${reviews.map(r => `
+          <div class="review-item">
+            <div class="meta">${escapeHtml(r.name)} | ${new Date(r.date).toLocaleString()} | ${renderStarsStatic(r.rating)}</div>
+            <div>${escapeHtml(r.comment)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // 리뷰 입력 폼 html 생성
+  function getReviewFormHTML() {
+    return `
+      <section class="section">
+        <h3>리뷰 작성하기</h3>
+        <form id="reviewForm">
+          <input type="text" id="reviewName" placeholder="이름" required />
+          <div class="stars" id="starContainer">
+            ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}">&#9733;</span>`).join('')}
+          </div>
+          <textarea id="reviewComment" rows="4" placeholder="리뷰 내용을 입력하세요." required></textarea>
+          <button type="submit" class="subscribe">리뷰 등록</button>
+        </form>
+      </section>
+    `;
+  }
+
+  // 별 점수 출력 (읽기용)
+  function renderStarsStatic(rating) {
+    let starsHTML = '';
+    for(let i=1; i<=5; i++) {
+      starsHTML += `<span class="star${i <= rating ? ' selected' : ''}">&#9733;</span>`;
+    }
+    return starsHTML;
+  }
+
+  // 현재 선택된 별점
+  let currentRating = 0;
+  // 별점 UI 설정 (클릭 시 선택)
+  function setupStarRating(){
+    const stars = document.querySelectorAll('#starContainer .star');
+    currentRating = 0;
+    stars.forEach(star => {
+      star.classList.remove('selected');
+      star.addEventListener('click', () => {
+        currentRating = Number(star.dataset.value);
+        stars.forEach(s => s.classList.toggle('selected', Number(s.dataset.value) <= currentRating));
+      });
+    });
+  }
+
+  // 상세 페이지 렌더링
+  function renderProductDetail(id){
+    const p = PRODUCTS[id];
+    if(!p){
+      mainEl.innerHTML = '<p>제품을 찾을 수 없습니다.</p>';
+      return;
+    }
+    mainEl.innerHTML = `
+      <section class="section">
+        <h2>${escapeHtml(p.name)}</h2>
+        <img src="${p.img}" alt="${escapeHtml(p.name)}" style="width:100%; max-width:600px; border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.15);"/>
+        <p style="margin-top:1rem; font-size:1.1rem; line-height:1.5;">${escapeHtml(p.desc)}</p>
+        <button id="btnBack">목록으로 돌아가기</button>
+      </section>
+    `;
+    document.getElementById('btnBack').addEventListener('click', () => {
+      location.hash = '#products';
+    });
+  }
+
+  // 리뷰 페이지 렌더링
+  function renderReviewsPage() {
+    mainEl.innerHTML = `
+      <section>
+        <h2>고객 리뷰</h2>
+        ${getReviewsHTML()}
+        ${getReviewFormHTML()}
+      </section>
+    `;
+    setupStarRating();
+    document.getElementById('reviewForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('reviewName').value.trim();
+      const comment = document.getElementById('reviewComment').value.trim();
+      if (!name || !comment) {
+        alert('이름과 내용을 입력해주세요.');
+        return;
+      }
+      if (currentRating === 0) {
+        alert('별점을 선택해주세요.');
+        return;
+      }
+      const reviews = loadReviews();
+      reviews.unshift({
+        name,
+        comment,
+        rating: currentRating,
+        date: new Date().toISOString(),
+      });
+      saveReviews(reviews);
+      alert('리뷰가 등록되었습니다.');
+      location.reload(); // 새로고침하여 리뷰 목록 갱신
+    });
+  }
+
+  // 연락처 페이지 간단히
+  function renderContact() {
+    mainEl.innerHTML = `
+      <section class="section">
+        <h2>연락처</h2>
+        <p>이메일: contact@batoosofa.com</p>
+        <p>전화번호: 010-1234-5678</p>
+        <p>주소: 서울시 강남구 ...</p>
+      </section>
+    `;
+  }
+
+  // HTML 이스케이프 함수
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, function (m) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+
+  // 라우팅 처리
+  function handleRoute() {
+    const hash = location.hash || '#home';
+
+    // 네비 active 표시 초기화
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+
+    if (hash === '#home') {
+      mainEl.innerHTML = getHomeHTML();
+      document.querySelector('nav a[href="#home"]').classList.add('active');
+      // 제품 상세보기 버튼 이벤트 연결
+      document.querySelectorAll('.products button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          location.hash = `#product-${btn.dataset.id}`;
+        });
+      });
+      // 유튜브 버튼
+      document.getElementById('youtubeBtn').addEventListener('click', () => {
+        window.open('https://www.youtube.com/channel/UCXXXXX', '_blank');
+      });
+      setupFadeIn();
+    } else if (hash === '#products') {
+      mainEl.innerHTML = getProductsPageHTML();
+      document.querySelector('nav a[href="#products"]').classList.add('active');
+      document.querySelectorAll('.products button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          location.hash = `#product-${btn.dataset.id}`;
+        });
+      });
+    } else if (hash.startsWith('#product-')) {
+      const id = hash.split('-')[1];
+      renderProductDetail(id);
+    } else if (hash === '#reviews') {
+      renderReviewsPage();
+      document.querySelector('nav a[href="#reviews"]').classList.add('active');
+    } else if (hash === '#contact') {
+      renderContact();
+      document.querySelector('nav a[href="#contact"]').classList.add('active');
+    } else {
+      mainEl.innerHTML = '<p>페이지를 찾을 수 없습니다.</p>';
+    }
+  }
+
+  // 스크롤 시 fadein 효과 (홈 섹션에만 적용)
+  function setupFadeIn(){
+    const sections = document.querySelectorAll('.home-section');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.3});
+    sections.forEach(s => io.observe(s));
+  }
+
+  window.addEventListener('hashchange', handleRoute);
+  window.addEventListener('load', () => {
+    document.getElementById('logo').addEventListener('click', () => location.hash = '#home');
+    handleRoute();
+  });
+</script>
+
+</body>
+</html>
